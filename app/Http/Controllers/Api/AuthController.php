@@ -33,7 +33,7 @@ class AuthController extends Controller
                 'user' => $user,
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-            ]
+            ],
         ], 201);
     }
 
@@ -42,11 +42,11 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (! Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid login credentials',
-                'data' => null
+                'data' => null,
             ], 401);
         }
 
@@ -60,7 +60,7 @@ class AuthController extends Controller
                 'user' => $user,
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-            ]
+            ],
         ], 200);
     }
 
@@ -70,7 +70,7 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         $token = $request->user()->currentAccessToken();
-        
+
         if ($token && method_exists($token, 'delete')) {
             $token->delete();
         }
@@ -78,7 +78,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Logged out successfully',
-            'data' => null
+            'data' => null,
         ], 200);
     }
 }

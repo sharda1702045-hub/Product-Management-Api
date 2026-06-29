@@ -8,18 +8,20 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the products.
      */
-    public function index(\Illuminate\Http\Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         $query = Product::query();
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         $products = $query->paginate(10);
@@ -40,7 +42,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Product created successfully',
-            'data' => (new ProductResource($product))->resolve()
+            'data' => (new ProductResource($product))->resolve(),
         ], 201);
     }
 
@@ -51,18 +53,18 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        if (!$product) {
+        if (! $product) {
             return response()->json([
                 'success' => false,
                 'message' => 'Product not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
 
         return response()->json([
             'success' => true,
             'message' => 'Product retrieved successfully',
-            'data' => (new ProductResource($product))->resolve()
+            'data' => (new ProductResource($product))->resolve(),
         ], 200);
     }
 
@@ -73,11 +75,11 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        if (!$product) {
+        if (! $product) {
             return response()->json([
                 'success' => false,
                 'message' => 'Product not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
 
@@ -86,7 +88,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Product updated successfully',
-            'data' => (new ProductResource($product))->resolve()
+            'data' => (new ProductResource($product))->resolve(),
         ], 200);
     }
 
@@ -97,11 +99,11 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        if (!$product) {
+        if (! $product) {
             return response()->json([
                 'success' => false,
                 'message' => 'Product not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
 
@@ -110,7 +112,7 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Product deleted successfully',
-            'data' => null
+            'data' => null,
         ], 200);
     }
 }
