@@ -23,4 +23,8 @@ class Product extends Model
             'quantity' => 'integer',
         ];
     }
+    public function stockTransactions() 
+    {
+        return $this->hasMany(StockTransaction::class);
+    }
 }

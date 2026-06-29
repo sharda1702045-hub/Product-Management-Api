@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\StockController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +22,11 @@ Route::middleware('auth:sanctum')->group(function () {
         'update' => 'api.products.update',
         'destroy' => 'api.products.destroy',
     ]);
+    Route::apiResource('suppliers', SupplierController::class);
+    Route::post('/stock/in', [StockController::class, 'stockIn']);
+    Route::post('/stock/out', [StockController::class, 'stockOut']);
+    Route::get('/products/{product}/stock', [StockController::class, 'currentStock']);
+    Route::get('/products/low-stock', [StockController::class, 'lowStock']);
+    Route::get('/transactions', [StockController::class, 'transactions']);
+    Route::get('/transactions/export', [StockController::class, 'exportCsv']);
 });
